@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+//option csharp_namespace = "GrpcService2";
+
+package Common.GrpcLibrary;
+
+service AccountLib {
+  rpc Login (LoginReq) returns (LoginRes);
+  rpc Register (RegisterReq) returns (RegisterRes);
+  rpc IsExists (Single.StringData) returns (Single.BoolData);
+}
+
+message RegisterReq {
+    string name = 1;
+    string loginPwd = 2;
+    string email = 3;
+    string phone = 4;
+    string contact = 5;
+}
+
+message Single{
+    message StringData{
+     string data = 1;
+	}
+
+    message BoolData{
+     bool data = 1;
+	}
+}
+
+message RegisterRes{
+    bool isSuccess = 1;
+    string error = 2;
+    int32 ID = 3;
+}
+
+message LoginReq {
+  string loginUser = 1;
+  string loginPwd = 2;
+}
+
+message LoginRes {
+  string message = 1;
+  int32 accountID = 2;
+}

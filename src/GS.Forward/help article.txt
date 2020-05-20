@@ -1,0 +1,7 @@
+
+a.grpc使用http进行调用：
+	https://www.cnblogs.com/stulzq/p/11697269.html 
+    https://docs.microsoft.com/en-us/aspnet/core/grpc/troubleshoot?view=aspnetcore-3.0&WT.mc_id=DT-MVP-5003133
+	
+b.protot文件写法：
+	https://www.jianshu.com/p/6a6dbff2b5cd

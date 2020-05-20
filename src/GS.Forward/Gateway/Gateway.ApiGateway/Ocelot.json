@@ -1,0 +1,36 @@
+{
+  //路由配置
+  "ReRoutes": [
+    {
+      "UpstreamPathTemplate": "/", //请求路径模板
+      "UpstreamHttpMethod": [ "Get", "POST" ], //请求方法数组
+      "DownstreamPathTemplate": "/Hello", //下游请求地址模板
+      "DownstreamScheme": "http", //请求协议，目前应该是支持http和https
+      "DownstreamHostAndPorts": [ //下游地址和端口
+        //{
+        //  "host": "localhost",
+        //  "port": 5001
+        //},
+        //{
+        //  "host": "localhost",
+        //  "port": 5002
+        //}
+      ],
+      "LoadBalancerOptions": { //负载均衡 RoundRobin(轮询)/LeastConnection(最少连接数)/CookieStickySessions(相同的Sessions或Cookie发往同一个地址)/NoLoadBalancer(不使用负载)
+        "Type": "RoundRobin"
+      },
+      //// Cousul配置中服务的name名字
+      "ServiceName": "ApiService",
+      //// 是否启用Consul服务发现
+      "UseServiceDiscovery": true
+    }
+  ],
+
+  "GlobalConfiguration": { //全局配置
+    "ServiceDiscoveryProvider": { // 是Consul服务发现的地址和端口
+      "Host": "localhost",
+      "Port": "8500"
+    },
+    "BaseUrl": "http://localhost:5000" //告诉别人网关对外暴露的域名
+  }
+}

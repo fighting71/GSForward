@@ -1,0 +1,6 @@
+
+a.http访问失败/gateway网关访问时502
+
+ reason-->在launchSettings.json中的applicationUrl使用了https
+ 
+ fix --> 更换回http即可.
