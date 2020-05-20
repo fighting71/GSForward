@@ -1,4 +1,5 @@
 ﻿using AccountDomain;
+using Common.MySqlProvide.CusStruct;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,14 +9,14 @@ namespace GS.AppContext
 {
     /// <summary>
     /// @auth : monster
-    /// @since : 5/19/2020 5:48:48 PM
+    /// @since : 5/20/2020 5:51:56 PM
     /// @source : 
     /// @des : 
     /// </summary>
     public class GSDbContext
     {
-        // TODO: customer orm
-        public IList<GSUser> Users { get; set; }
+
+        public IData<GSUser> Users { get; set; }
 
     }
 }

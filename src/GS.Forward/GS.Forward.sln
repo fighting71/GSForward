@@ -23,15 +23,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway.ApiGateway", "Gatew
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.WebApiHelp", "Common\Common.WebApiHelp\Common.WebApiHelp.csproj", "{38CB6747-A01E-4218-8EC5-C40D59EDBB21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.GrpcLibrary", "Common\Common.GrpcLibrary\Common.GrpcLibrary.csproj", "{D30B95E9-2A0B-49F8-A475-DB98FDEAE8C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.GrpcLibrary", "Common\Common.GrpcLibrary\Common.GrpcLibrary.csproj", "{D30B95E9-2A0B-49F8-A475-DB98FDEAE8C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountService", "Services\Services.AccountService\AccountService.csproj", "{D27F2D24-0014-4F08-8E36-4EFAB570D23E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountService", "Services\Services.AccountService\AccountService.csproj", "{D27F2D24-0014-4F08-8E36-4EFAB570D23E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountDomain", "Domain\AccountDomain\AccountDomain.csproj", "{1BD81BBF-F6CF-47AA-B92C-FDE25C2FB7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountDomain", "Domain\AccountDomain\AccountDomain.csproj", "{1BD81BBF-F6CF-47AA-B92C-FDE25C2FB7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core", "Domain\Domain.Core\Domain.Core.csproj", "{1EA03198-EB6D-46D1-B91C-94BC3199798D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Core", "Domain\Domain.Core\Domain.Core.csproj", "{1EA03198-EB6D-46D1-B91C-94BC3199798D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GS.AppContext", "Infrastructure\GS.AppContext\GS.AppContext.csproj", "{1B138EA4-C187-4EF6-9C19-61A446BB1DE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GS.AppContext", "Infrastructure\GS.AppContext\GS.AppContext.csproj", "{1B138EA4-C187-4EF6-9C19-61A446BB1DE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.MySqlProvide", "Common\Common.MySqlProvide\Common.MySqlProvide.csproj", "{55E94E6D-C0A7-4D54-A197-5E20A60513A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{AD098563-12E5-4B86-BBB0-EAD04BC03606}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "Test\TestConsole\TestConsole.csproj", "{FF9C7231-0467-49EB-A643-6ACAE46F1739}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +81,14 @@ Global
 		{1B138EA4-C187-4EF6-9C19-61A446BB1DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B138EA4-C187-4EF6-9C19-61A446BB1DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B138EA4-C187-4EF6-9C19-61A446BB1DE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55E94E6D-C0A7-4D54-A197-5E20A60513A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55E94E6D-C0A7-4D54-A197-5E20A60513A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55E94E6D-C0A7-4D54-A197-5E20A60513A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55E94E6D-C0A7-4D54-A197-5E20A60513A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF9C7231-0467-49EB-A643-6ACAE46F1739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9C7231-0467-49EB-A643-6ACAE46F1739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9C7231-0467-49EB-A643-6ACAE46F1739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9C7231-0467-49EB-A643-6ACAE46F1739}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +103,8 @@ Global
 		{1BD81BBF-F6CF-47AA-B92C-FDE25C2FB7D8} = {5F874E35-4B1E-48C2-9446-C9C7D21AFC71}
 		{1EA03198-EB6D-46D1-B91C-94BC3199798D} = {5F874E35-4B1E-48C2-9446-C9C7D21AFC71}
 		{1B138EA4-C187-4EF6-9C19-61A446BB1DE7} = {0BCC01CD-117B-4F09-BEEB-9CB7DD069022}
+		{55E94E6D-C0A7-4D54-A197-5E20A60513A2} = {89B76039-1DB6-4592-9349-96CEB0864596}
+		{FF9C7231-0467-49EB-A643-6ACAE46F1739} = {AD098563-12E5-4B86-BBB0-EAD04BC03606}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D917A725-62AE-4D80-96B1-3B3AC3C0A258}
