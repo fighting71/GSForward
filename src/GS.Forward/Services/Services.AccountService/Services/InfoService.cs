@@ -4,21 +4,18 @@ using Common.GrpcLibrary;
 using Grpc.Core;
 using GS.AppContext;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AccountService.Services
 {
     public class InfoService : AccountLib.AccountLibBase
     {
-        private readonly GSDbContext dbContext;
+        private readonly IQueryContext queryContext;
         private readonly IMapper mapper;
 
-        public InfoService(GSDbContext dbContext,IMapper mapper)
+        public InfoService(IQueryContext queryContext,IMapper mapper)
         {
-            this.dbContext = dbContext;
-            this.dbContext = dbContext;
+            this.queryContext = queryContext;
             this.mapper = mapper;
         }
 
@@ -29,10 +26,10 @@ namespace AccountService.Services
 
         public async override Task<Common.GrpcLibrary.Single.Types.BoolData> IsExists(Common.GrpcLibrary.Single.Types.StringData request, ServerCallContext context)
         {
+            var flag = request.Data;
+            var res = await queryContext.AnyAsync<GSUser>(u => u.Name == flag);
 
-            var res = dbContext.Users.Any(u=>u.Name.Equals(request.Data,StringComparison.InvariantCultureIgnoreCase));
-
-            return new Common.GrpcLibrary.Single.Types.BoolData() { Data = res};
+            return new Common.GrpcLibrary.Single.Types.BoolData() { Data = res };
 
         }
 
@@ -52,9 +49,9 @@ namespace AccountService.Services
             user.NickName = user.Name;
             user.LoginTime = user.CreateTime = DateTime.Now;
 
-            dbContext.Users.Add(user);
+            var key = await queryContext.AddAndGetKeyAsync(user);
 
-            return new RegisterRes() { ID = user.Id, IsSuccess = true };
+            return new RegisterRes() { ID = key, IsSuccess = true };
 
         }
 

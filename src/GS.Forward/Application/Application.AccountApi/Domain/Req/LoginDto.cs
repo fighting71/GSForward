@@ -8,8 +8,8 @@ namespace Application.AccountApi.Domain.Req
     public class LoginDto
     {
 
-        public string Name { get; set; }
-        public string Pwd { get; set; }
+        public string LoginUser { get; set; }
+        public string LoginPwd { get; set; }
 
     }
 }

@@ -1,3 +1,5 @@
+using Application.AccountApi.Domain.Req;
+using AutoMapper;
 using Common.GrpcLibrary;
 using Common.WebApiHelp.Extension;
 using Grpc.Core;
@@ -36,6 +38,8 @@ namespace Application.AccountApi
 
             //});
 
+            services.AddControllers();
+
             // Ìí¼Óhttp2Ö§³Ö
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
@@ -48,6 +52,16 @@ namespace Application.AccountApi
                 options.Address = new Uri(accountServiceUri);
             });
 
+            #endregion
+
+            #region autoMapper
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.CreateMap<RegisterDto, RegisterReq>();
+                mc.CreateMap<LoginDto, LoginReq>();
+            });
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
             #endregion
 
 

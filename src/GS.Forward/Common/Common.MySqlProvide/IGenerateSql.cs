@@ -15,11 +15,16 @@ namespace Common.MySqlProvide
     public interface IGenerateSql
     {
 
-        StringBuilder GetSql();
-
-        StringBuilder TranslateForm<T>(IQueryable<T> source);
-
-        StringBuilder TranslateWhere(Expression where);
+        string Explain(Expression expression);
 
     }
+
+    public interface IFrommGnerate : IGenerateSql { }
+    public interface ISelectGnerate : IGenerateSql { }
+    public interface IWhereGnerate : IGenerateSql { }
+    public interface IEditGenerate 
+    {
+        StringBuilder CreateCommandString<T>(T data);
+    }
+
 }

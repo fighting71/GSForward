@@ -1,10 +1,18 @@
-﻿using Common.MySqlProvide.Extension;
+﻿using AccountDomain;
+using Common.MySqlProvide;
+using Common.MySqlProvide.Extension;
+using Common.MySqlProvide.Generate;
 using Common.MySqlProvide.Visitor;
+using Dapper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
+using TestConsole.Tests;
 
 namespace TestConsole
 {
@@ -13,29 +21,63 @@ namespace TestConsole
         static void Main(string[] args)
         {
 
-            #region test mysql visitor
+            new TestVisitorDemo().Run();
 
-            MysqlSingleVisitor visitor = new MysqlSingleVisitor();
+            { // dapper test
+                DbConnection connection = new MySqlConnection("Server=localhost;Database=gsforward; User=root;Password=root;charset=utf8mb4;sslmode=none;");
 
-            var queryable = new List<Personal>().AsQueryable();
+                IEditGenerate generate = new EditGenerate();
 
-            //IQueryable<Personal> queryable = list.AsQueryable();
+                { // test add
+                    //var user = new GSUser() { 
 
-            //Expression<Func<Personal, bool>> expression = u => u.Age > 10;
+                    //    Contact = "666666",
+                    //    Name = "test_generate",
+                    //    NickName = "测试生成",
+                    //    Email = "777@qq.com",
+                    //    LoginPwd = "123456"
 
-            //var expression2 = Expression.Call(null, ((MethodInfo)MethodBase.GetCurrentMethod())
-            //    .MakeGenericMethod(new Type[] { typeof(Personal) }),
-            //    new Expression[] { queryable.Expression, Expression.Quote(expression) });
+                    //};
 
-            Console.WriteLine(queryable.GetSql(visitor, u => u.Age > 10));
-            Console.WriteLine(queryable.GetSql(visitor, u => u.Age > 10 && u.Name == "test"));
-            Console.WriteLine(queryable.GetSql(visitor, u => u.Age > 10 && u.Name != "test"));
-            Console.WriteLine(queryable.GetSql(visitor, u => u.Age > 10 || u.Name == "test"));
-            Console.WriteLine(queryable.GetSql(visitor, u => u.Age != 10 && !(u.Name == null)));
-            Console.WriteLine(queryable.GetSql(visitor, u => u.Age > 10 && u.Age < 20));
-            //queryable.GetSql(visitor, u => u.Age > 10 || u.Name.StartsWith("132"));
+                    //StringBuilder sql = generate.CreateCommandString(user);
 
-            #endregion
+                    //Console.WriteLine(sql);
+
+                    //int res = connection.Execute(sql.ToString(), user);
+
+                    //Console.WriteLine($"execute res : {res}");
+                }
+
+                {
+
+                    //var user = new GSUser()
+                    //{
+
+                    //    Contact = "666666",
+                    //    Name = "test_generate222",
+                    //    NickName = "测试生成",
+                    //    Email = "777@qq.com",
+                    //    LoginPwd = "123456"
+
+                    //};
+
+                    //StringBuilder sql = generate.CreateCommandString(user);
+
+                    //sql.AppendLine();
+                    //sql.Append("SELECT LAST_INSERT_ID();");
+
+                    //Console.WriteLine(sql);
+
+                    //int res = connection.ExecuteScalar<int>(sql.ToString(), user);
+
+                    //Console.WriteLine($"execute res : {res}");
+
+                }
+
+                //var res = connection.QueryFirst<bool>("SELECT EXISTS (SELECT Id FROM gsuser) ");
+
+                //Console.WriteLine(res);
+            }
 
             Console.WriteLine("Hello World!");
 
@@ -43,12 +85,6 @@ namespace TestConsole
 
         }
 
-        public class Personal
-        {
-            public string Name { get; set; }
-
-            public int Age { get; set; }
-        }
 
     }
 }

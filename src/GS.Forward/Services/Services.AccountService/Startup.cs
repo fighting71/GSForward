@@ -3,7 +3,12 @@ using AccountDomain;
 using AccountService.Services;
 using AutoMapper;
 using Common.GrpcLibrary;
+using Common.MySqlProvide;
+using Common.MySqlProvide.Generate;
+using Common.MySqlProvide.Visitor;
 using Dapper;
+using GS.AppContext;
+using GS.AppContext.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,6 +48,16 @@ namespace AccountService
             });
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
+            #endregion
+
+            #region dbContext
+
+            services.AddTransient<IFrommGnerate, FromGenerateVisitor>();
+            services.AddTransient<ISelectGnerate, SelectGenerateVisitor>();
+            services.AddTransient<IWhereGnerate, WhereGenerateVisitor>();
+            services.AddTransient<IEditGenerate, EditGenerate>();
+            services.AddTransient<IQueryContext, MysqlQueryContext>();
+
             #endregion
 
         }
