@@ -5,8 +5,11 @@
 package Common.GrpcLibrary;
 
 service AccountLib {
+  // 用户登录
   rpc Login (LoginReq) returns (LoginRes);
+  // 用户注册
   rpc Register (RegisterReq) returns (RegisterRes);
+  // 查看用户是否已存在
   rpc IsExists (Single.StringData) returns (Single.BoolData);
 }
 
@@ -16,6 +19,11 @@ message RegisterReq {
     string email = 3;
     string phone = 4;
     string contact = 5;
+}
+
+message LoginReq {
+  string loginUser = 1;
+  string loginPwd = 2;
 }
 
 message Single{
@@ -29,17 +37,14 @@ message Single{
 }
 
 message RegisterRes{
+    // 注册结果
     bool isSuccess = 1;
     string error = 2;
     int32 ID = 3;
 }
 
-message LoginReq {
-  string loginUser = 1;
-  string loginPwd = 2;
-}
-
 message LoginRes {
   string message = 1;
+  // 登录id 0-登录失败
   int32 accountID = 2;
 }

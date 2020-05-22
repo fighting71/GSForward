@@ -55,9 +55,11 @@ namespace Application.AccountApi
             #endregion
 
             #region autoMapper
-            var mappingConfig = new MapperConfiguration(mc =>
+            MapperConfiguration mappingConfig = new MapperConfiguration(mc =>
             {
-                mc.CreateMap<RegisterDto, RegisterReq>();
+                mc.CreateMap<RegisterDto, RegisterReq>()
+                // ºöÂÔnullÖµ
+                .ForAllMembers(opt => opt.Condition((src, dest, sourceMember) => sourceMember != null));
                 mc.CreateMap<LoginDto, LoginReq>();
             });
             IMapper mapper = mappingConfig.CreateMapper();

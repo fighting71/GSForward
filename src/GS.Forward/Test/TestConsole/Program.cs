@@ -74,6 +74,17 @@ namespace TestConsole
 
                 }
 
+                {
+
+                    var sql = @"SELECT * FROM gsuser WHERE Id = @Id";
+
+                    object param = new Dictionary<string, object>() { { "@Id", 1 } };
+
+                    IEnumerable<GSUser> gsUser = connection.Query<GSUser>(sql, param);
+
+
+                }
+
                 //var res = connection.QueryFirst<bool>("SELECT EXISTS (SELECT Id FROM gsuser) ");
 
                 //Console.WriteLine(res);

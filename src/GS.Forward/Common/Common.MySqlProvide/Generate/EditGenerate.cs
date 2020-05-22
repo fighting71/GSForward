@@ -61,5 +61,39 @@ namespace Common.MySqlProvide.Generate
             return builder;
         }
 
+        public StringBuilder UpdateCommandString<T>(T data, IDictionary<string, object> dic)
+        {
+
+            StringBuilder builder = new StringBuilder("Update ");
+
+            Type type = typeof(T);
+
+            AliasAttribute tableAlias = typeof(T).GetCustomAttribute<AliasAttribute>();
+
+            if (tableAlias == null)
+                builder.AppendLine(type.Name);
+            else builder.AppendLine(tableAlias.Name);
+
+            var fields = type.GetProperties().Where(u =>
+            {
+                var value = u.GetValue(data);
+
+                return !(value == null || (bool)GetDefaultMethod.MakeGenericMethod(new[] { u.PropertyType }).Invoke(null, new object[] { value }));
+            }).Select(u =>
+            {
+
+                var name = u.PropertyType.GetCustomAttribute<AliasAttribute>()?.Name ?? u.Name;
+
+                dic.Add($"@{u.Name}", u.GetValue(data));
+
+                return new { Key = name, Value = u.Name };
+            }).ToArray();
+
+            builder.AppendLine("SET");
+            builder.Append(string.Join(",", fields.Select(u => $"{u.Key}=@{u.Value}")));
+
+            return builder;
+
+        }
     }
 }

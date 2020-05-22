@@ -1,6 +1,7 @@
 ﻿using Common.Core.CusStruct;
 using Common.MySqlProvide.CusAttr;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -13,8 +14,7 @@ namespace Common.MySqlProvide.Generate
     /// @source : 
     /// @des : 构建WHERE
     /// </summary>
-    [Obsolete("存在sql注入风险")]
-    public partial class WhereGenerateVisitor : ExpressionVisitor
+    public partial class WhereParameterGenerateVisitor : ExpressionVisitor
     {
 
         protected override Expression VisitUnary(UnaryExpression u)
@@ -55,10 +55,11 @@ namespace Common.MySqlProvide.Generate
                 {
                     AliasAttribute alias = m.Member.GetCustomAttribute<AliasAttribute>();
 
-                    if (alias != null)
-                        this.Append(alias.Name);
-                    else
-                        this.Append(m.Member.Name);
+                    alias = alias ?? new AliasAttribute(m.Member.Name);
+
+                    // *** 此处添加AliasAttribute 方便解析时区分是取自源列还是参数值
+                    this.Append(alias);
+
                     return m;
                 }
                 else if (m.Expression.NodeType == ExpressionType.Constant)
@@ -100,13 +101,14 @@ namespace Common.MySqlProvide.Generate
 
     }
 
-    public partial class WhereGenerateVisitor : IWhereGnerate
+    public partial class WhereParameterGenerateVisitor : IWhereParameterGenerate
     {
 
-        public string Explain(Expression expression)
+        public string Explain(Expression expression, IDictionary<string, object> param)
         {
-
+            // 参数清空
             head = node = null;
+            this.param = param;
 
             Visit(expression);
 
@@ -116,11 +118,11 @@ namespace Common.MySqlProvide.Generate
 
         }
 
-        private LinkNode<string, ExpressionType?> head, node;
+        private LinkNode<object, ExpressionType?> head, node;
 
         private void SetOptType(ExpressionType type)
         {
-            if (head == null) head = node = new LinkNode<string, ExpressionType?>(type);
+            if (head == null) head = node = new LinkNode<object, ExpressionType?>(type);
             else if (node.Flag == null) node.Flag = type;
             else
             {
@@ -143,68 +145,62 @@ namespace Common.MySqlProvide.Generate
             }
         }
 
-        private void Append(string str)
-        {
-            if (head == null) head = node = new LinkNode<string, ExpressionType?>(str);
-            else if (node.Val == null) node.Val = str;
-            else node = node.Next = new LinkNode<string, ExpressionType?>(str);
-        }
-
         private void Append(object value)
         {
-            switch (Type.GetTypeCode(value.GetType()))
-            {
-                case TypeCode.Boolean:
-                    this.Append((((bool)value) ? 1 : 0).ToString());
-                    break;
-                case TypeCode.String:
-                    this.Append($"'{value}'");
-                    break;
-                case TypeCode.DateTime:
-                    this.Append($"'{(DateTime)value:yyyy-MM-dd hh:mm:ss ffff}'");
-                    break;
-                case TypeCode.Object:
-                    throw new NotSupportedException(string.Format("常量{0}不支持", value));
-                default:
-                    this.Append(value.ToString());
-                    break;
-            }
+            if (head == null) head = node = new LinkNode<object, ExpressionType?>(value);
+            else if (node.Val == null) node.Val = value;
+            else node = node.Next = new LinkNode<object, ExpressionType?>(value);
         }
 
-        private string Analysis(LinkNode<string, ExpressionType?> node)
+        IDictionary<string, object> param;
+
+        private string GetKey(object val)
+        {
+            // 若是where 中的 筛选值取自原有列
+            if (val is AliasAttribute alias) return alias.Name;
+
+            var key = $"p__{param.Count}";
+            param.Add(key, val);
+            return $"@{key}";
+        }
+
+        private object Analysis(LinkNode<object, ExpressionType?> node)
         {
 
-            if (node.Next == null) return node.Val;
+            if (node.Next == null)
+            {
+                return GetKey(node.Val);
+            }
 
-            string right = node.Next.ToString();
+            object right = Analysis(node.Next);
 
             switch (node.Flag)
             {
                 case ExpressionType.AndAlso:
                 case ExpressionType.And:
-                    return $"{node.Val} AND {right}";
+                    return $"{GetKey(node.Val)} AND {right}";
                 case ExpressionType.Or:
-                    return $"({node.Val} OR {right})";
+                    return $"{GetKey(node.Val)} OR {right}";
                 case ExpressionType.Equal:
                     if (right == null)
-                        return $"{node.Val} IS NULL";
+                        return $"{GetKey(node.Val)} IS NULL";
                     else
-                        return $"{node.Val} = {right}";
+                        return $"{GetKey(node.Val)} = {right}";
                 case ExpressionType.NotEqual:
                     if (right == null)
-                        return $"{node.Val} IS NOT NULL";
+                        return $"{GetKey(node.Val)} IS NOT NULL";
                     else
-                        return $"{node.Val} <> {right}";
+                        return $"{GetKey(node.Val)} <> {right}";
                 case ExpressionType.LessThan:
-                    return $"{node.Val} < {right}";
+                    return $"{GetKey(node.Val)} < {GetKey(right)}";
                 case ExpressionType.LessThanOrEqual:
-                    return $"{node.Val} <= {right}";
+                    return $"{GetKey(node.Val)} <= {GetKey(right)}";
                 case ExpressionType.GreaterThan:
-                    return $"{node.Val} > {right}";
+                    return $"{GetKey(node.Val)} > {GetKey(right)}";
                 case ExpressionType.GreaterThanOrEqual:
-                    return $"{node.Val} >= {right}";
+                    return $"{GetKey(node.Val)} >= {GetKey(right)}";
                 case ExpressionType.Add:
-                    return $"({node.Val} + {right})";
+                    return $"({GetKey(GetKey(node.Val))} + {GetKey(right)})";
                 default:
                     throw new NotSupportedException(string.Format("运算符{0}不支持", node.Flag));
             }

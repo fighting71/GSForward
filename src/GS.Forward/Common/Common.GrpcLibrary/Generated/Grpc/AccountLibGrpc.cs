@@ -50,16 +50,34 @@ namespace Common.GrpcLibrary {
     [grpc::BindServiceMethod(typeof(AccountLib), "BindService")]
     public abstract partial class AccountLibBase
     {
+      /// <summary>
+      /// 用户登录
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
       public virtual global::System.Threading.Tasks.Task<global::Common.GrpcLibrary.LoginRes> Login(global::Common.GrpcLibrary.LoginReq request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
+      /// <summary>
+      /// 用户注册
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
       public virtual global::System.Threading.Tasks.Task<global::Common.GrpcLibrary.RegisterRes> Register(global::Common.GrpcLibrary.RegisterReq request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
+      /// <summary>
+      /// 查看用户是否已存在
+      /// </summary>
+      /// <param name="request">The request received from the client.</param>
+      /// <param name="context">The context of the server-side call handler being invoked.</param>
+      /// <returns>The response to send back to the client (wrapped by a task).</returns>
       public virtual global::System.Threading.Tasks.Task<global::Common.GrpcLibrary.Single.Types.BoolData> IsExists(global::Common.GrpcLibrary.Single.Types.StringData request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
@@ -90,50 +108,134 @@ namespace Common.GrpcLibrary {
       {
       }
 
+      /// <summary>
+      /// 用户登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
       public virtual global::Common.GrpcLibrary.LoginRes Login(global::Common.GrpcLibrary.LoginReq request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return Login(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      /// 用户登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
       public virtual global::Common.GrpcLibrary.LoginRes Login(global::Common.GrpcLibrary.LoginReq request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_Login, null, options, request);
       }
+      /// <summary>
+      /// 用户登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
       public virtual grpc::AsyncUnaryCall<global::Common.GrpcLibrary.LoginRes> LoginAsync(global::Common.GrpcLibrary.LoginReq request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return LoginAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      /// 用户登录
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
       public virtual grpc::AsyncUnaryCall<global::Common.GrpcLibrary.LoginRes> LoginAsync(global::Common.GrpcLibrary.LoginReq request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_Login, null, options, request);
       }
+      /// <summary>
+      /// 用户注册
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
       public virtual global::Common.GrpcLibrary.RegisterRes Register(global::Common.GrpcLibrary.RegisterReq request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return Register(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      /// 用户注册
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
       public virtual global::Common.GrpcLibrary.RegisterRes Register(global::Common.GrpcLibrary.RegisterReq request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_Register, null, options, request);
       }
+      /// <summary>
+      /// 用户注册
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
       public virtual grpc::AsyncUnaryCall<global::Common.GrpcLibrary.RegisterRes> RegisterAsync(global::Common.GrpcLibrary.RegisterReq request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return RegisterAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      /// 用户注册
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
       public virtual grpc::AsyncUnaryCall<global::Common.GrpcLibrary.RegisterRes> RegisterAsync(global::Common.GrpcLibrary.RegisterReq request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_Register, null, options, request);
       }
+      /// <summary>
+      /// 查看用户是否已存在
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The response received from the server.</returns>
       public virtual global::Common.GrpcLibrary.Single.Types.BoolData IsExists(global::Common.GrpcLibrary.Single.Types.StringData request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return IsExists(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      /// 查看用户是否已存在
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The response received from the server.</returns>
       public virtual global::Common.GrpcLibrary.Single.Types.BoolData IsExists(global::Common.GrpcLibrary.Single.Types.StringData request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_IsExists, null, options, request);
       }
+      /// <summary>
+      /// 查看用户是否已存在
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="headers">The initial metadata to send with the call. This parameter is optional.</param>
+      /// <param name="deadline">An optional deadline for the call. The call will be cancelled if deadline is hit.</param>
+      /// <param name="cancellationToken">An optional token for canceling the call.</param>
+      /// <returns>The call object.</returns>
       public virtual grpc::AsyncUnaryCall<global::Common.GrpcLibrary.Single.Types.BoolData> IsExistsAsync(global::Common.GrpcLibrary.Single.Types.StringData request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return IsExistsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
+      /// <summary>
+      /// 查看用户是否已存在
+      /// </summary>
+      /// <param name="request">The request to send to the server.</param>
+      /// <param name="options">The options for the call.</param>
+      /// <returns>The call object.</returns>
       public virtual grpc::AsyncUnaryCall<global::Common.GrpcLibrary.Single.Types.BoolData> IsExistsAsync(global::Common.GrpcLibrary.Single.Types.StringData request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_IsExists, null, options, request);

@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+//option csharp_namespace = "GrpcService2";
+
+package Common.GrpcLibrary;
+
+service AccountLib {
+  rpc IsExists (Single.StringData) returns (Single.BoolData);
+  //stream - 使用流作为参数
+  rpc Test (stream Single.StringData) returns (Single.BoolData);
+}
+
+// 定义message
+message Single{
+    message StringData{
+     string data = 1;
+	}
+
+    message BoolData{
+     bool data = 1;
+	}
+}

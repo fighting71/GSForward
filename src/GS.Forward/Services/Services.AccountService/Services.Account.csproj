@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.Core\Common.Core.csproj" />
     <ProjectReference Include="..\..\Common\Common.GrpcLibrary\Common.GrpcLibrary.csproj" />
     <ProjectReference Include="..\..\Domain\AccountDomain\AccountDomain.csproj" />
     <ProjectReference Include="..\..\Infrastructure\GS.AppContext\GS.AppContext.csproj" />

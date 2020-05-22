@@ -1,12 +1,9 @@
 using System.Data.Common;
 using AccountDomain;
-using AccountService.Services;
 using AutoMapper;
 using Common.GrpcLibrary;
 using Common.MySqlProvide;
 using Common.MySqlProvide.Generate;
-using Common.MySqlProvide.Visitor;
-using Dapper;
 using GS.AppContext;
 using GS.AppContext.Impl;
 using Microsoft.AspNetCore.Builder;
@@ -16,8 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySql.Data.MySqlClient;
+using Services.Account.Services;
 
-namespace AccountService
+namespace Services.Account
 {
     public class Startup
     {
@@ -54,9 +52,9 @@ namespace AccountService
 
             services.AddTransient<IFrommGnerate, FromGenerateVisitor>();
             services.AddTransient<ISelectGnerate, SelectGenerateVisitor>();
-            services.AddTransient<IWhereGnerate, WhereGenerateVisitor>();
+            services.AddTransient<IWhereParameterGenerate, WhereParameterGenerateVisitor>();
             services.AddTransient<IEditGenerate, EditGenerate>();
-            services.AddTransient<IQueryContext, MysqlQueryContext>();
+            services.AddTransient<IDbContext, MySqlDbContext>();
 
             #endregion
 
@@ -65,6 +63,7 @@ namespace AccountService
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,7 +73,7 @@ namespace AccountService
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<InfoService>();
+                endpoints.MapGrpcService<AccountService>();
 
                 // Ó³Éägrpc·þÎñ
                 endpoints.MapGet("/", async context =>

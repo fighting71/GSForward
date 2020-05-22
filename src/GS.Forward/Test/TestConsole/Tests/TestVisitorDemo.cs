@@ -26,30 +26,30 @@ namespace TestConsole.Tests
 
             {
 
-                //TestVisitor visitor = new TestVisitor();
+                TestVisitor visitor = new TestVisitor();
 
-                ////Expression<Func<Personal, bool>> expression = u => u.Age == 12 && u.Name == u.NickName + "123";
-                ////Expression<Func<Personal, bool>> expression = u => !(u.Age >= 12);
+                Expression<Func<Personal, bool>> expression = u => u.Age == 12 && u.Name == u.NickName + "123";
+                //Expression<Func<Personal, bool>> expression = u => !(u.Age >= 12);
                 //Expression expression = Expression.Constant(typeof(Personal));
 
                 //string name = "12312";
                 //Expression<Func<Personal, bool>> expression = u => u.Name == name;
 
-                //visitor.Visit(expression);
+                visitor.Visit(expression);
 
             }
 
             { // where visitor
 
-                WhereGenerateVisitor visitor = new WhereGenerateVisitor();
+                //WhereGenerateVisitor visitor = new WhereGenerateVisitor();
 
-                //Expression<Func<Personal, bool>> expression = u => u.Age == 12 && u.Name == u.NickName + "123";
-                //string name = "12312";
-                //Expression<Func<Personal, bool>> expression = u => u.Name == name;
-                var data = new { Name = "test" };
-                Expression<Func<Personal, bool>> expression = u => u.Name == data.Name;
+                ////Expression<Func<Personal, bool>> expression = u => u.Age == 12 && u.Name == u.NickName + "123";
+                ////string name = "12312";
+                ////Expression<Func<Personal, bool>> expression = u => u.Name == name;
+                //var data = new { Name = "test" };
+                //Expression<Func<Personal, bool>> expression = u => u.Name == data.Name;
 
-                Console.WriteLine(visitor.Explain(expression));
+                //Console.WriteLine(visitor.Explain(expression));
 
             }
 
