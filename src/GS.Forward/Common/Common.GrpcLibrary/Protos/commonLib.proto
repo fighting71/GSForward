@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+package Common.GrpcLibrary;
+
+message Single{
+    message StringData{
+     string data = 1;
+	}
+
+    message BoolData{
+     bool data = 1;
+	}
+}

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Application.AccountApi.Domain.Config;
 using Application.AccountApi.Domain.Req;
+using Application.AccountApi.Domain.Res;
 using AutoMapper;
+using Common.Core;
 using Common.GrpcLibrary;
-using Grpc.Core;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Application.QuestionApi.Controllers
 {
@@ -24,29 +23,57 @@ namespace Application.QuestionApi.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<object> Login([FromServices] AccountLib.AccountLibClient client, [FromBody]LoginDto dto)
+        public async Task<AuthResDto> Login([FromServices] AccountLib.AccountLibClient client, [FromServices] IOptionsMonitor<AuthAESConfig> options, [FromBody]LoginDto dto)
         {
 
             LoginRes res = await client.LoginAsync(mapper.Map<LoginReq>(dto));
 
-            if (res.AccountID > 0) return "login success member-" + res.AccountID;
-            else return "userName or Pwd error!";
+            if (res.AccountID > 0)
+            {
+                return new AuthResDto()
+                {
+                    Success = true,
+                    Token = EncryptionHelp.AESEncrypt(res.AccountID.ToString(), options.CurrentValue.Key, options.CurrentValue.SaltBytes)
+                };
+            }
+            else
+            {
+                return new AuthResDto()
+                {
+                    Success = false,
+                    Message = res.Message
+                };
+            }
         }
 
         [HttpPost("Register")]
-        public async Task<object> Register([FromServices] AccountLib.AccountLibClient client,[FromBody]RegisterDto dto)
+        public async Task<AuthResDto> Register([FromServices] AccountLib.AccountLibClient client, [FromServices] IOptionsMonitor<AuthAESConfig> options, [FromBody]RegisterDto dto)
         {
 
-            Common.GrpcLibrary.Single.Types.BoolData res = await client.IsExistsAsync(new Common.GrpcLibrary.Single.Types.StringData() { Data = dto.Name});
+            Common.GrpcLibrary.Single.Types.BoolData res = await client.IsExistsAsync(new Common.GrpcLibrary.Single.Types.StringData() { Data = dto.Name });
 
             if (res.Data)
             {
-                return $"username : '{dto.Name}' has been created!!!";
+                return new AuthResDto()
+                {
+                    Success = false,
+                    Message = $"username : '{dto.Name}' has been created!!!",
+                };
             }
 
             RegisterRes registerRes = await client.RegisterAsync(mapper.Map<RegisterReq>(dto));
 
-            return registerRes;
+            var authRes = new AuthResDto()
+            {
+                Success = registerRes.IsSuccess,
+                Message = registerRes.Error
+            };
+
+            if (registerRes.ID > 0)
+            {
+                authRes.Token = EncryptionHelp.AESEncrypt(registerRes.ID.ToString(), options.CurrentValue.Key, options.CurrentValue.SaltBytes);
+            }
+            return authRes;
         }
 
     }

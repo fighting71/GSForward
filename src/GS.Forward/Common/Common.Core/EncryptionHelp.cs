@@ -15,7 +15,14 @@ namespace Common.Core
     public static class EncryptionHelp
     {
 
-        public static string EncryptText(string input, string key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="key"></param>
+        /// <param name="saltBytes">盐字节必须为至少8个字节</param>
+        /// <returns></returns>
+        public static string AESEncrypt(string input, string key, byte[] saltBytes)
         {
 
             byte[] bytesToBeEncrypted = Encoding.UTF8.GetBytes(input);
@@ -23,18 +30,16 @@ namespace Common.Core
 
             passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
-            byte[] bytesEncrypted = AESEncryptBytes(bytesToBeEncrypted, passwordBytes);
+            byte[] bytesEncrypted = AESEncrypt(bytesToBeEncrypted, passwordBytes, saltBytes);
 
             string result = Convert.ToBase64String(bytesEncrypted);
 
             return result;
         }
 
-        public static byte[] AESEncryptBytes(byte[] bytesToBeEncrypted, byte[] passwordBytes)
+        public static byte[] AESEncrypt(byte[] bytesToBeEncrypted, byte[] passwordBytes, byte[] saltBytes)
         {
             byte[] encryptedBytes = null;
-
-            var saltBytes = new byte[9] { 13, 34, 27, 67, 189, 255, 104, 219, 122 };
 
             using (var ms = new MemoryStream())
             {
@@ -63,38 +68,58 @@ namespace Common.Core
             return encryptedBytes;
         }
 
-        public static string AESDecrypt(string input, string key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="key"></param>
+        /// <param name="saltBytes">盐字节必须为至少8个字节</param>
+        /// <returns></returns>
+        public static string AESDecrypt(string input, string key, byte[] saltBytes)
         {
-            var fullCipher = Convert.FromBase64String(input);
+            byte[] bytesToBeDecrypted = Convert.FromBase64String(input);
 
-            var iv = new byte[16];
-            var cipher = new byte[fullCipher.Length - iv.Length];
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(key);
 
-            Buffer.BlockCopy(fullCipher, 0, iv, 0, iv.Length);
-            Buffer.BlockCopy(fullCipher, iv.Length, cipher, 0, fullCipher.Length - iv.Length);
-            var decryptKey = Encoding.UTF8.GetBytes(key);
+            passwordBytes = SHA256.Create().ComputeHash(passwordBytes);
 
-            using (var aesAlg = Aes.Create())
+            byte[] bytesDecrypted = AESDecrypt(bytesToBeDecrypted, passwordBytes, saltBytes);
+
+            string result = Encoding.UTF8.GetString(bytesDecrypted);
+
+            return result;
+        }
+
+        public static byte[] AESDecrypt(byte[] bytesToBeDecrypted, byte[] passwordBytes, byte[] saltBytes)
+        {
+            byte[] decryptedBytes = null;
+
+            using (var ms = new MemoryStream())
             {
-                using (var decryptor = aesAlg.CreateDecryptor(decryptKey, iv))
+                using (var AES = new RijndaelManaged())
                 {
-                    string result;
-                    using (var msDecrypt = new MemoryStream(cipher))
+                    AES.KeySize = 256;
+                    AES.BlockSize = 128;
+
+                    var key = new Rfc2898DeriveBytes(passwordBytes, saltBytes, 1000);
+                    AES.Key = key.GetBytes(32);
+                    AES.IV = key.GetBytes(16);
+
+                    AES.Mode = CipherMode.CBC;
+
+                    using (var cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
                     {
-                        using (var csDecrypt = new CryptoStream(msDecrypt,
-                            decryptor, CryptoStreamMode.Read))
-                        {
-                            using (var srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                result = srDecrypt.ReadToEnd();
-                            }
-                        }
+                        cs.Write(bytesToBeDecrypted, 0, bytesToBeDecrypted.Length);
+                        cs.Close();
                     }
 
-                    return result;
+                    decryptedBytes = ms.ToArray();
                 }
             }
+
+            return decryptedBytes;
         }
+
 
     }
 }

@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.Core\Common.Core.csproj" />
     <ProjectReference Include="..\..\Common\Common.GrpcLibrary\Common.GrpcLibrary.csproj" />
     <ProjectReference Include="..\..\Common\Common.WebApiHelp\Common.WebApiHelp.csproj" />
   </ItemGroup>

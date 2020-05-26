@@ -1,3 +1,4 @@
+using Application.AccountApi.Domain.Config;
 using Application.AccountApi.Domain.Req;
 using AutoMapper;
 using Common.GrpcLibrary;
@@ -66,6 +67,9 @@ namespace Application.AccountApi
             services.AddSingleton(mapper);
             #endregion
 
+            #region ≈‰÷√ªÒ»°
+            services.Configure<AuthAESConfig>(Configuration.GetSection("AuthAES"));
+            #endregion
 
         }
 

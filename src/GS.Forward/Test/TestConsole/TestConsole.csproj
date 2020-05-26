@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.MySqlProvide\Common.MySqlProvide.csproj" />
+    <ProjectReference Include="..\..\Common\Common.Core\Common.Core.csproj" />
     <ProjectReference Include="..\..\Domain\AccountDomain\AccountDomain.csproj" />
   </ItemGroup>
 

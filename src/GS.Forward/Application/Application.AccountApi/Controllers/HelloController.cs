@@ -1,8 +1,4 @@
-﻿using System.Threading.Tasks;
-using Application.AccountApi.Domain.Req;
-using AutoMapper;
-using Common.GrpcLibrary;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Application.QuestionApi.Controllers
 {

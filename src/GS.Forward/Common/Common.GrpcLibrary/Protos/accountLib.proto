@@ -2,6 +2,8 @@
 
 //option csharp_namespace = "GrpcService2";
 
+import "commonLib.proto"
+
 package Common.GrpcLibrary;
 
 service AccountLib {
@@ -24,16 +26,6 @@ message RegisterReq {
 message LoginReq {
   string loginUser = 1;
   string loginPwd = 2;
-}
-
-message Single{
-    message StringData{
-     string data = 1;
-	}
-
-    message BoolData{
-     bool data = 1;
-	}
 }
 
 message RegisterRes{
