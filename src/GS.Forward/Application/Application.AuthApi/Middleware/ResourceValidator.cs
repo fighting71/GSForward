@@ -50,14 +50,14 @@ namespace Application.AuthApi.Middleware
 			{
 				await ValidateScopeAsync(request.Client, resourcesFromStore, parsedScope, result);
 			}
-			if (result.InvalidScopes.Count > 0)
-			{
-				result.Resources.IdentityResources.Clear();
-				result.Resources.ApiResources.Clear();
-				result.Resources.ApiScopes.Clear();
-				result.ParsedScopes.Clear();
-			}
-			return result;
+            if (result.InvalidScopes.Count > 0)
+            {
+                result.Resources.IdentityResources.Clear();
+                result.Resources.ApiResources.Clear();
+                result.Resources.ApiScopes.Clear();
+                result.ParsedScopes.Clear();
+            }
+            return result;
 		}
 
 		protected virtual async Task ValidateScopeAsync(Client client, Resources resourcesFromStore, ParsedScopeValue requestedScope, ResourceValidationResult result)

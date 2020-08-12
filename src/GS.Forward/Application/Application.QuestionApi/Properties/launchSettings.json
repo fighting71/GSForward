@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Application.AccountApi": {
+    "Application.QuestionApi": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/question/Hello",

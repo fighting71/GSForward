@@ -17,6 +17,7 @@ namespace Application.AuthApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    string urls = webBuilder.GetSetting(WebHostDefaults.ServerUrlsKey);
                     webBuilder.UseStartup<Startup>();
                 }).UseSerilog((context, configuration) =>
                 {

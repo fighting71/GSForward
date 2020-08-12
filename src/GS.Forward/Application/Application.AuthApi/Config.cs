@@ -5,6 +5,8 @@
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 using System.Collections.Generic;
+using System.Security.Claims;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace Application.AuthApi
 {
@@ -18,7 +20,11 @@ namespace Application.AuthApi
                 {
                     SubjectId = "1",
                     Username = "alice",
-                    Password = "password"
+                    Password = "password",
+                    Claims = new []{
+                         new Claim(ClaimTypes.NameIdentifier,"666"),
+                         new Claim(ClaimTypes.Role,"888"),
+                    }
                 },
                 new TestUser
                 {
@@ -37,11 +43,19 @@ namespace Application.AuthApi
             };
         }
 
+        public static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new List<ApiScope>
+            {
+                new ApiScope("scope.normal")
+            };
+        }
+
         public static IEnumerable<ApiResource> GetApis()
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("api1", "My API"){ Scopes = new []{ "scope.normal" , "offline_access" } }
             };
         }
 
@@ -75,7 +89,12 @@ namespace Application.AuthApi
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "openid" }
+                    AllowedScopes = {
+                        "scope.normal",
+                        StandardScopes.OfflineAccess,//如果要获取refresh_tokens ,必须在scopes中加上OfflineAccess 
+                    },
+                    AllowOfflineAccess = true,//如果要获取refresh_tokens ,必须把AllowOfflineAccess设置为true
+                    AccessTokenLifetime = 60 * 60 * 24
                 }
             };
         }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CodeProject.ObjectPool;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis.ConnectionPool;
 
 namespace Application.QuestionApi.Controllers
 {
@@ -17,6 +19,19 @@ namespace Application.QuestionApi.Controllers
         public HelloController(ILogger<HelloController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpGet(nameof(TestRedis))]
+        public string TestRedis([FromServices] ObjectPool<PooledConnectionMultiplexer> pool)
+        {
+            var key = "test.key";
+
+            Parallel.For(0, 1_000_000, (num) =>
+            {
+                pool.GetObject().GetDatabase().StringGet(key);
+            });
+
+            return "success";
         }
 
         [HttpGet]
