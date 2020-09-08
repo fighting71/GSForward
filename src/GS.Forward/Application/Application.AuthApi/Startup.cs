@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Connections.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -93,6 +94,9 @@ namespace Application.AuthApi
             //Resources resource = resourceStore.FindEnabledResourcesByScopeAsync(new[] { "openid" }).Result;
 
             //ApiScope apiScope = resource.FindApiScope("openId");
+
+
+            HttpConnectionDispatcher dispatcher = app.ApplicationServices.GetRequiredService<HttpConnectionDispatcher>();
 
             if (env.IsDevelopment())
             {

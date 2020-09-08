@@ -10,6 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace Application.QuestionApi.Controllers
 {
+    /// <summary>
+    /// 账号中心
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class AccountController : ControllerBase
@@ -17,11 +20,22 @@ namespace Application.QuestionApi.Controllers
 
         private readonly IMapper mapper;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mapper"></param>
         public AccountController(IMapper mapper)
         {
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="options"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost("Login")]
         public async Task<AuthResDto> Login([FromServices] AccountLib.AccountLibClient client, [FromServices] IOptionsMonitor<AuthAESConfig> options, [FromBody]LoginDto dto)
         {
@@ -46,6 +60,13 @@ namespace Application.QuestionApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="options"></param>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost("Register")]
         public async Task<AuthResDto> Register([FromServices] AccountLib.AccountLibClient client, [FromServices] IOptionsMonitor<AuthAESConfig> options, [FromBody]RegisterDto dto)
         {

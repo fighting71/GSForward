@@ -20,7 +20,8 @@
     "Application.AccountApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "health",
+      //"launchUrl": "health",
+      "launchUrl": "swagger/index.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
